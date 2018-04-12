@@ -8,3 +8,4 @@ write.csv(h1b, "h1b_tidy.csv")
 file.remove("./h1b1.csv")
 #read tidy data
 h1b <- read_csv("./h1b_tidy.csv")
+I can do whatever I want
