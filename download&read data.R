@@ -5,6 +5,7 @@ h1b <- read_csv("./h1b1.csv")
 h1b <- h1b %>%
   select(-1)
 write.csv(h1b, "h1b_tidy.csv")
+saveRDS(h1b,"h1b.rds")
 file.remove("./h1b1.csv")
 #read tidy data
 h1b <- read_csv("./h1b_tidy.csv")
