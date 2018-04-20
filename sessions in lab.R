@@ -2,18 +2,19 @@ download.packages("ggmap")
 download.packages("tidyverse")
 library(ggmap)
 library(tidyverse)
-setwd("")
+setwd("C:/Users/zl1409a/Desktop")
 #geocode
 h1b <- readRDS("./h1b.rds")
 #rank of city with most application
-count_site <- readRDS("./count_side.rds")
+count_site <- readRDS("./count_site.rds")
 #detect missing
 h1b_detect <- h1b %>%
   group_by(WORKSITE) %>%
   summarise (miss = sum(is.na(lon) | is.na(lat))) %>%
   full_join(count_site) %>%
   filter(miss != 0) %>%
-  arrange(desc(apply_city_us))
+  filter(!is.na(WORKSITE)) %>%
+  arrange(desc(apply_city_us)) 
 #provide geocodes(day1)
 WORKSITE <- h1b_detect$WORKSITE[1:2500]
 site_geo <- cbind(geocode(WORKSITE), WORKSITE)
