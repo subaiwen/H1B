@@ -1,4 +1,7 @@
 ```
+Original data:
+  https://www.foreignlaborcert.doleta.gov/performancedata.cfm
+
 Link of dataset:
   https://www.kaggle.com/account/login?returnUrl=%2Fnsharan%2Fh-1b-visa%2Fversion%2F2
 
@@ -24,11 +27,10 @@ Explanation of colnames:
     latitude
 
 Mindmap:
-https://atlas.mindmup.com/2018/04/081175403d5011e8aff8c7abfd3f124d/variables/index.html
+  https://atlas.mindmup.com/2018/04/081175403d5011e8aff8c7abfd3f124d/variables/index.html
 
 Shinny app:
-demographical map(ggmap) - how different type of people spread, how it changes through years
-Reseach Question:
+  demographical map(ggmap) - how different type of people spread, how it changes through years
   
   
 ```
