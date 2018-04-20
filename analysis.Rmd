@@ -1,0 +1,49 @@
+---
+title: "Analysis"
+author: "ZhijianLiu"
+date: "4/19/2018"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+#1.H1B for DC, VA, MD
+```{r read}
+h1b <- readRDS("h1b.rds") 
+```
+##1.1 Annual H1B line plot (2011 - 2016)
+```{sub 3 states}
+sub_h1b <- readRDS("h1b.rds") %>%
+  filter(state == "DISTRICT OF COLUMBIA" |state == "MARYLAND" | state == "VIRGINIA")
+```
+###1.1.1 application
+
+###1.1.2 salary
+
+###1.1.3 how they rank in the whole country(2011- 2016)
+
+###1.2 city ranks in these three states
+
+###1.3 employer ranks in these three states
+
+##2 data science related
+###2.1 number of application of different data science job change through years(line plot)
+
+###2.2 rank of number of h1b application of data science related jobs in all states( compare with h1b means)
+
+###2.3 salary of data science related jobs in all states( compare with h1b means)
+
+###2.4 salary of different data science job
+
+###2.5 certificaion rate
+
+
+
+
+
+###salary
+h1b %>% 
++ filter (state == "SOUTH DAKOTA") %>%
++ arrange(desc(PREVAILING_WAGE))
