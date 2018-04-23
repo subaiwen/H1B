@@ -1,8 +1,7 @@
-download.packages("ggmap")
-download.packages("tidyverse")
+install.packages("ggmap")
+install.packages("tidyverse")
 library(ggmap)
 library(tidyverse)
-setwd("C:/Users/zl1409a/Documents")
 #geocode
 h1b <- readRDS("./h1b.rds")
 #rank of city with most application
