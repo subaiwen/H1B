@@ -30,7 +30,7 @@ Mindmap:
   https://atlas.mindmup.com/2018/04/081175403d5011e8aff8c7abfd3f124d/variables/index.html
 
 Shinny app:
-  demographical map(ggmap) - how different type of people spread, how it changes through years
+  https://lobs.shinyapps.io/H1B_map/
   
   
 ```
