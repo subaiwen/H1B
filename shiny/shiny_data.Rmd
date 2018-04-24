@@ -1,0 +1,83 @@
+---
+title: "Shiny_data"
+author: "ZhijianLiu"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+```{r read}
+h1b_shiny1 <- readRDS("/Users/liubeixi/Desktop/Data Science/Project/h1b.rds")
+names(h1b_shiny1)
+```
+```{r whole_shiny}
+h1b_shiny2 <- h1b_shiny1 %>%
+  select(WORKSITE, apply_city, lon, lat) %>%
+  filter(!is.na(lat)) %>%
+  unique() %>%
+  mutate( Percent = apply_city/sum(sum(apply_city)))
+
+h1b_shiny <- h1b_shiny1 %>%
+  select(WORKSITE, EMPLOYER_NAME, lon, lat, 
+         apply_city, applyrank_city_us, applyrank_city_state, apply_state, applyrank_state,
+         wage_city, wagerank_city_us, wagerank_city_state, wage_state, wagerank_state,
+         apply_employer_city, applyrank_employer_city, wage_employer_city, wagerank_employer_city) %>%
+  filter(!is.na(lat)) %>%
+  unique() %>%
+  left_join(select(h1b_shiny2, WORKSITE, Percent), by = "WORKSITE") %>%
+  filter(applyrank_employer_city %in% c(1:20)|wagerank_employer_city %in% c(1:20))
+
+saveRDS(h1b_shiny, "/Users/liubeixi/Desktop/Data Science/Project/Shinny/H1B/data/h1b_shiny.rds")
+```
+```{r map_apply}
+h1b_map_apply <- h1b_shiny %>%
+  select(WORKSITE, lon, lat, apply_city, Percent,
+         applyrank_city_us, applyrank_city_state, apply_state, applyrank_state,
+         EMPLOYER_NAME, apply_employer_city, applyrank_employer_city) %>%
+  unique() %>%
+  filter(applyrank_employer_city %in% c(1:20)) %>%
+  filter(!is.na(lat))
+
+saveRDS(h1b_map_apply, "/Users/liubeixi/Desktop/Data Science/Project/Shinny/H1B/data/h1b_map_apply.rds")
+```
+```{r map_wage}
+h1b_map_wage <- h1b_shiny %>%
+  select(WORKSITE, lon, lat, wage_city, 
+         wagerank_city_us, wagerank_city_state, wage_state, wagerank_state,
+         EMPLOYER_NAME, wage_employer_city, wagerank_employer_city) %>%
+  unique() %>%
+  filter(wagerank_employer_city %in% c(1:20)) %>%
+  filter(!is.na(lat))
+
+saveRDS(h1b_map_wage, "/Users/liubeixi/Desktop/Data Science/Project/Shinny/H1B/data/h1b_map_wage.rds")
+```
+```{r map_apply_test}
+h1b_map_apply_test <- readRDS("/Users/liubeixi/Desktop/Data Science/Project/Shinny/H1B/data/h1b_shiny.rds") %>%
+  select(WORKSITE, lon, lat, apply_city, Percent) %>%
+  unique() %>%
+  filter(!is.na(lat))
+saveRDS(h1b_map_apply_test, "/Users/liubeixi/Desktop/Data Science/Project/Shinny/H1B/data/h1b_map_apply_test.rds")
+```
+```{r map_wage_test}
+h1b_map_wage_test <- readRDS("/Users/liubeixi/Desktop/Data Science/Project/Shinny/H1B/data/h1b_shiny.rds") %>%
+  select(WORKSITE, lon, lat, wage_city) %>%
+  unique() %>%
+  filter(!is.na(lat))
+saveRDS(h1b_map_wage_test, "/Users/liubeixi/Desktop/Data Science/Project/Shinny/H1B/data/h1b_map_wage_test.rds")
+```
+#detect city with no geocode
+```{r dectect no geo}
+h1b_shiny1 %>%
+   select(WORKSITE, lon, lat, apply_city, applyrank_city_us, applyrank_city_state, apply_state, applyrank_state,
+                              wage_city, wagerank_city_us, wagerank_city_state, wage_state, wagerank_state) %>%
+  unique() %>%
+  filter(is.na(lat)) %>%
+  arrange(desc(apply_city)) %>%
+  slice(-1) %>%
+  nrow()
+
+rm(list = ls())
+```
