@@ -1,0 +1,197 @@
+---
+title: "Data analysis- H1-B"
+author: "Angela Erdiaw-Kwasie"
+date: "April 24, 2018"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(readr)
+library(magrittr)
+library(tidyverse)
+library(plyr)
+library(dplyr)
+#loading dataset
+setwd("C:/Users/Obaa Gela/Desktop/H1B-master")
+h1b <- read_csv("./h1b.csv")
+```
+
+
+EXTRACTING OP TEN COMPANIES BASED ON THE HIGHEST NUMBER OF APPLICATIONS
+```{r}
+count_emp=count(h1b$EMPLOYER_NAME)
+arrcount=count_emp[order(count_emp$freq, decreasing=T),]
+
+Top10=head(arrcount, 10)
+Top10
+```
+
+DISTRIBUTION OF THE TOP TEN COMPANIES OVER ALL
+```{r}
+to1=Top10%>%mutate(ordered = fct_reorder(as.factor(x), freq))
+p=ggplot(data=to1, aes(x=ordered, y=freq)) + 
+  geom_bar(stat='identity',color="blue", fill="red")
+P <- P+  ylab("NO. OF APPLICATIONS") + xlab("EMPLOYERS") 
+P <- P + ggtitle("TOP 10 EMPLOYERS")
+p + coord_flip()
+
+```
+
+
+FILTERING THE TOP TEN COMPANIES
+
+```{r}
+overall10=h1b%>%filter(EMPLOYER_NAME =="INFOSYS LIMITED"|EMPLOYER_NAME=="TATA CONSULTANCY SERVICES LIMITED"| EMPLOYER_NAME=="WIPRO LIMITED"|
+             EMPLOYER_NAME=="DELOITTE CONSULTING LLP"|EMPLOYER_NAME=="IBM INDIA PRIVATE LIMITED"|EMPLOYER_NAME=="ACCENTURE LLP"|
+               EMPLOYER_NAME=="MICROSOFT CORPORATION"|EMPLOYER_NAME=="HCL AMERICA, INC."|EMPLOYER_NAME=="ERNST & YOUNG U.S. LLP"|EMPLOYER_NAME=="COGNIZANT TECHNOLOGY SOLUTIONS U.S. CORPORATION")
+```
+
+
+DISTRIBUTION OF APPLICATIONS BY THE TOP TEN COMPANIES OVER THE SIX YEARS(2011-2016)
+```{r}
+ overall10$EMPLOYER_NAME[overall10$EMPLOYER_NAME== "COGNIZANT TECHNOLOGY SOLUTIONS U.S. CORPORATION"] <- "COGNIZANT TECHNOLOGY"
+overall10$YEAR <- as.factor(overall10$YEAR)
+overall10 %>% 
+  group_by(EMPLOYER_NAME, YEAR) %>% 
+  summarise(count = n()) %>% 
+  ggplot(aes( x= EMPLOYER_NAME,y = count, fill = YEAR))+
+  geom_bar(stat = "identity",  position=position_dodge())+ coord_flip()
+
+
+```
+
+
+EXTRACTING THE 15 MOST COMMON JOB TITLES APPLIED FOR BY THE HIGH APPLICAT EMPLOYERS 
+```{r}
+count_emp_titles=count(overall10$JOB_TITLE)
+arrcount_TITLE=count_emp_titles[order(count_emp_titles$freq, decreasing=T),]
+Top10_titles=head(arrcount_TITLE, 15)
+Top10_titles
+```
+
+DISTRIBUTION OF THE MOST COMMON JOB TITLES BY THEIR FREQUENCY
+```{r}
+too=Top10_titles%>%mutate(ordered = fct_reorder(as.factor(x), freq))
+p=ggplot(data=too, aes(x=ordered, y=freq)) + 
+  geom_bar(stat='identity',color="blue", fill="blue")
+p + coord_flip()
+```
+
+
+Distribution of wages of the top 15 Job titles
+```{r}
+
+wage_job=over_15_title%>% select(JOB_TITLE, PREVAILING_WAGE, EMPLOYER_NAME)
+ggplot(wage_job, aes(x = reorder(JOB_TITLE, PREVAILING_WAGE, FUN = median), y = PREVAILING_WAGE)) +
+  ylim(20000,100000) +
+  geom_boxplot() +labs( x = "JOB TITLE ", y = "PREVAILING WAGE", title = "WAGES OF JOB TITLES BY TOP TEN EMPLOYERS")+
+  coord_flip()
+
+```
+
+Distribution of Data Science Related Jobs across the years.(Data Science, Machine Learning, Data Engineering)
+```{r}
+
+```
+
+
+
+FILTERING DATA SCIENCE RELATED JOBS 
+```{r}
+over_data=h1b%>%filter(str_detect(JOB_TITLE, "DATA ANALYST")|str_detect(JOB_TITLE, "DATA ENGINEERING")|str_detect(JOB_TITLE, "MACHINE LEARNING"))
+```
+
+
+EXTRACTING THE EMPLOYER WITH THE MOST APPLICATIONS FOR DATA SCIENCE RELATED JOB TITLES
+```{r}
+count_data_emp=count(over_data$EMPLOYER_NAME)
+arrcount_data_emp=count_data_emp[order(count_data_emp$freq, decreasing=T),]
+Top10_dataemp=head(arrcount_data_emp, 10)
+Top10_dataemp
+```
+
+DISTRIBUTION OF THE TOP TEN APPLICANT EMPLOYERS FOR  DATA SCIENCE RELATED JOB TITLES
+
+```{r}
+too=Top10_dataemp%>%mutate(ordered = fct_reorder(as.factor(x), freq))
+p=ggplot(data=too, aes(x=ordered, y=freq)) + 
+  geom_bar(stat='identity',color="blue", fill="blue")
+p + coord_flip()
+```
+
+
+
+STATE WITH THE HIGHEST DATA SCIENCE APPLICATION
+```{r}
+count_data_state=count(over_data$state)
+arrcount_data_state=count_data_state[order(count_data_state$freq, decreasing=T),]
+Top10_datastate=head(arrcount_data_state, 15)
+Top10_datastate
+
+too=Top10_datastate%>%mutate(ordered = fct_reorder(as.factor(x), freq))
+p=ggplot(data=too, aes(x=ordered, y=freq)) + 
+  geom_bar(stat='identity',color="blue", fill="blue")
+p + coord_flip()
+```
+
+DISTRIBUTION OF TOP PAID STATES DATA SCIENCE RELATED JOBS
+```{r}
+best_state_ds=over_data%>%filter(state=="CALIFORNIA"|state=="TEXAS"|state=="NEW YORK"|
+                     state=="NEW JERSEY"|state=="ILLINOIS"|
+                     state=="MASSACHUSETS"|state=="PENNSYLVANIA"|state=="NEW YORK"|state=="GEORGIA"|
+                     state=="VIRGINIA")
+
+ggplot(best_state_ds, aes(x = reorder(state, PREVAILING_WAGE, FUN = median), y = PREVAILING_WAGE)) +
+  ylim(20000,100000) +
+  geom_boxplot() +labs( x = "states ", y = "PREVAILING WAGE", title = "WAGES OF top 10 Data science Related States")+
+  coord_flip()
+
+```
+
+
+
+DISTRIBUTION OF APPLICATIONS OVER THE YEARS IN DC, MD AND VA
+```{r}
+over_three_state=h1b%>%filter(state=="MARYLAND"|state=="DISTRICT OF COLUMBIA"|state=="VIRGINIA")
+
+over_three_state$YEAR <- as.factor(over_three_state$YEAR)
+over_three_state %>% 
+  group_by(state, YEAR) %>% 
+  summarise(count = n()) %>% 
+  ggplot(aes( x= state,y = count, fill = YEAR))+
+  geom_bar(stat = "identity",  position=position_dodge())+ coord_flip()
+```
+
+
+
+AMONG DC, VA and MD , which state has the highest number of applications for data science related job.
+```{r}
+narrow=over_data%>%filter(state=="VIRGINIA"|state=="DISTRICT OF COLUMBIA"|state=="MARYLAND")
+count_narrow_state=count(narrow$state)
+arrcount_narrow_state=count_narrow_state[order(count_narrow_state$freq, decreasing=T),]
+Top10_narrow=head(arrcount_narrow_state, 15)
+Top10_narrow
+
+too=Top10_narrow%>%mutate(ordered = fct_reorder(as.factor(x), freq))
+p=ggplot(data=too, aes(x=ordered, y=freq)) + 
+  geom_bar(stat='identity',color="blue", fill="blue")
+p + coord_flip()
+```
+
+
+Among Virginia, DC and Maryland, which state is the highest data science related job title paying state?
+```{r}
+y=newjobdf%>%filter(state=="VIRGINIA"|state=="DISTRICT OF COLUMBIA"|state=="MARYLAND")
+ggplot(y, aes(x = reorder(state, PREVAILING_WAGE, FUN = median), y = PREVAILING_WAGE)) +
+  ylim(20000,100000) +
+  geom_boxplot() +labs( x = "states ", y = "PREVAILING WAGE", title = "WAGES OF DC, VA &MD FOR  DATA SCIENCE REALTED JOBS")+
+  coord_flip()
+
+
+```
+
+
+
+
+
