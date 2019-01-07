@@ -9,7 +9,7 @@ Project in Data Science class
 
 *Explanation of colnames*:
 
-  CASE_STATUS:
+>  CASE_STATUS:
     Status associated with the last significant event or decision. Valid values include “Certified,” “Certified-Withdrawn,”
     “Denied,” and “Withdrawn”.
     
@@ -26,8 +26,8 @@ Project in Data Science class
     Y = Full Time Position; N = Part Time Position.
     
   PREVAILING_WAGE:
-  
     Prevailing Wage for the job being requested for temporary labor condition.
+    
   WORKSITE:
     City, State
     
