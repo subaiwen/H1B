@@ -1,13 +1,13 @@
 # H1B
 Project in Data Science class
 
-Original data:
+*Original data*:
   https://www.foreignlaborcert.doleta.gov/performancedata.cfm
 
-Link of dataset:
+*Link of dataset*:
   https://www.kaggle.com/account/login?returnUrl=%2Fnsharan%2Fh-1b-visa%2Fversion%2F2
 
-Explanation of colnames:
+*Explanation of colnames*:
   CASE_STATUS:
     Status associated with the last significant event or decision. Valid values include “Certified,” “Certified-Withdrawn,”
     “Denied,” and “Withdrawn”.
@@ -28,8 +28,8 @@ Explanation of colnames:
   lat:
     latitude
 
-Mindmap:
+*Mindmap*:
   https://atlas.mindmup.com/2018/04/081175403d5011e8aff8c7abfd3f124d/variables/index.html
 
-Shinny app:
+*Shinny app*:
   https://lobs.shinyapps.io/H1B_map/
