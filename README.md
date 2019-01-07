@@ -13,28 +13,28 @@ Project in Data Science class
     Status associated with the last significant event or decision. Valid values include “Certified,” “Certified-Withdrawn,”
     “Denied,” and “Withdrawn”.
     
-  EMPLOYER_NAME:
+>  EMPLOYER_NAME:
     Name of employer submitting labor condition application.
     
-  SOC_NAME:
+>  SOC_NAME:
     Occupational name associated with the SOC_CODE.
     
-  JOB_TITLE:
+>  JOB_TITLE:
     Title of the job.
     
-  FULL_TIME_POSITION:
+>  FULL_TIME_POSITION:
     Y = Full Time Position; N = Part Time Position.
     
-  PREVAILING_WAGE:
+>  PREVAILING_WAGE:
     Prevailing Wage for the job being requested for temporary labor condition.
     
-  WORKSITE:
+>  WORKSITE:
     City, State
     
-  lon:
+>  lon:
     longitude
     
-  lat:
+>  lat:
     latitude
 
 *Mindmap*:
